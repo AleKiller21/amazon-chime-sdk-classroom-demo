@@ -152,7 +152,7 @@ function appHtml(appName) {
   return `../browser/dist/${appName}.html`;
 }
 
-function setupCloud9() {}
+function setupCloud9() { }
 
 function ensureTools() {
   spawnOrFail('aws', ['--version']);
@@ -303,15 +303,15 @@ export default function getMessagingWssUrl() {return '${messagingWssUrl}';}
   spawnOrFail('zip', ['-r', `${appName}-win.zip`, appName]);
   process.chdir(rootDir);
 
-  console.log('... uploading Mac installer (this may take a while) ...');
-  spawnOrFail('aws', [
-    's3',
-    'cp',
-    '--acl',
-    'public-read',
-    `release/${appName}.zip`,
-    `s3://${bucket}-releases/mac/${appName}.zip`
-  ]);
+  // console.log('... uploading Mac installer (this may take a while) ...');
+  // spawnOrFail('aws', [
+  //   's3',
+  //   'cp',
+  //   '--acl',
+  //   'public-read',
+  //   `release/${appName}.zip`,
+  //   `s3://${bucket}-releases/mac/${appName}.zip`
+  // ]);
 
   console.log('... uploading Windows installer (this may take a while) ...');
   spawnOrFail('aws', [
