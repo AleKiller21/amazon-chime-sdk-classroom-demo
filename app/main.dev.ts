@@ -8,7 +8,7 @@
  * When running `yarn build` or `yarn build-main`, this file is compiled to
  * `./app/main.prod.js` using webpack. This gives us some performance wins.
  */
-import { app, BrowserWindow, ipcMain } from 'electron';
+import { app, BrowserWindow, desktopCapturer, ipcMain } from 'electron';
 import log from 'electron-log';
 import { autoUpdater } from 'electron-updater';
 import path from 'path';
@@ -78,6 +78,7 @@ const createWindow = async () => {
   });
 
   mainWindow.loadURL(`file://${__dirname}/app.html`);
+  mainWindow.webContents.openDevTools();
 
   // @TODO: Use 'ready-to-show' event
   //        https://github.com/electron/electron/blob/master/docs/api/browser-window.md#using-ready-to-show-event
@@ -111,7 +112,7 @@ const createWindow = async () => {
       return;
     }
 
-    const windowWidth = 150;
+    const windowWidth = defaultWidth;
     const windowHeight = defaultHeight;
     mainWindow.setAlwaysOnTop(true, 'floating');
     mainWindow.setMinimumSize(windowWidth, windowHeight);
@@ -124,7 +125,7 @@ const createWindow = async () => {
       mainWindow.setWindowButtonVisibility(false);
     }
     // In macOS Electron, long titles may be truncated.
-    mainWindow.setTitle('virtualclassroom');
+    mainWindow.setTitle('chimeelectrondemo1');
 
     event.reply('chime-enable-screen-share-mode-ack');
   });
@@ -146,9 +147,16 @@ const createWindow = async () => {
     if (typeof mainWindow.setWindowButtonVisibility === 'function') {
       mainWindow.setWindowButtonVisibility(true);
     }
-    mainWindow.setTitle('virtualclassroom');
+    mainWindow.setTitle('chimeelectrondemo1');
 
     event.reply('chime-disable-screen-share-mode-ack');
+  });
+
+  ipcMain.handle('screenPicker-channel', () => {
+    return desktopCapturer.getSources({
+      types: ['window', 'screen'],
+      thumbnailSize: { width: 600, height: 600 }
+    });
   });
 };
 

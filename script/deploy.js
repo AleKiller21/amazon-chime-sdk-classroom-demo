@@ -168,7 +168,7 @@ function main() {
 
   process.chdir(rootDir);
 
-  spawnOrFail('script/cloud9-resize.sh', []);
+  //spawnOrFail('script/cloud9-resize.sh', []);
 
   process.chdir(`${rootDir}/serverless`);
 

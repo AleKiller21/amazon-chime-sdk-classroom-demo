@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import classNames from 'classnames/bind';
-import { desktopCapturer, DesktopCapturerSource } from 'electron';
+import { DesktopCapturerSource, ipcRenderer } from 'electron';
 import React, { useEffect, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
@@ -28,11 +28,9 @@ export default function ScreenPicker(props: Props) {
   const [selectedSourceId, setSelectedSourceId] = useState<string | null>(null);
 
   useEffect(() => {
-    desktopCapturer
-      .getSources({
-        types: ['screen', 'window'],
-        thumbnailSize: { width: 600, height: 600 }
-      })
+    console.log("Capturando pantalla");
+
+    ipcRenderer.invoke('screenPicker-channel')
       .then(async (desktopCapturerSources: DesktopCapturerSource[]) => {
         setSources(desktopCapturerSources);
         return null;
@@ -126,7 +124,7 @@ export default function ScreenPicker(props: Props) {
               onClick={() => {
                 setSelectedSourceId(source.id);
               }}
-              onKeyPress={() => {}}
+              onKeyPress={() => { }}
               role="button"
               tabIndex={0}
             >
